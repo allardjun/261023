@@ -263,6 +263,18 @@ function traces(p, t) {
   return { data: out, dp };
 }
 
+// Tick labels written out as powers of ten.
+// Plotly's own labels for log axes in 3d fail to draw the label "1", so every label is given explicitly.
+const SUPERSCRIPT = { "-": "⁻", 0: "⁰", 1: "¹", 2: "²", 3: "³", 4: "⁴", 5: "⁵", 6: "⁶", 7: "⁷", 8: "⁸", 9: "⁹" };
+function powerTicks([lo, hi], step) {
+  const exps = [];
+  for (let e = lo; e <= hi; e += step) exps.push(e);
+  return {
+    tickvals: exps.map((e) => 10 ** e),
+    ticktext: exps.map((e) => "10" + [...String(e)].map((c) => SUPERSCRIPT[c]).join("")),
+  };
+}
+
 function layout(t) {
   const axis = (extra) => ({
     color: t.text,
@@ -284,9 +296,9 @@ function layout(t) {
     hoverlabel: { font: { family: t.font } },
     scene: {
       uirevision: "keep",
-      xaxis: axis({ type: "log", range: LOG10X_RANGE, dtick: 2, exponentformat: "power",
+      xaxis: axis({ type: "log", range: LOG10X_RANGE, ...powerTicks(LOG10X_RANGE, 2),
                     title: { text: "pMHC concentration (µM)", font: { size: 13, color: t.text } } }),
-      yaxis: axis({ type: "log", range: LOG10KD_RANGE, dtick: 1, exponentformat: "power",
+      yaxis: axis({ type: "log", range: LOG10KD_RANGE, ...powerTicks(LOG10KD_RANGE, 1),
                     title: { text: "Peptide KD (µM)", font: { size: 13, color: t.text } } }),
       // The zero tick is left off, since it collides with the corner ticks of the other axes; the floor marks zero.
       zaxis: axis({ range: [0, 1], tickvals: [0.25, 0.5, 0.75, 1], tickformat: ".2f",

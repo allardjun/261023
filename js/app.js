@@ -395,6 +395,8 @@ function init() {
   buildGlossary();
   SLIDERS.forEach(syncControl);
   document.getElementById("reset").addEventListener("click", resetToDefaults);
+  document.getElementById("reset-view").addEventListener("click", () =>
+    Plotly.relayout(plotEl, { "scene.camera": defaultCamera() }));
   const copy = document.getElementById("copy-link");
   copy.addEventListener("click", () => copyLink(copy));
   window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", schedule);

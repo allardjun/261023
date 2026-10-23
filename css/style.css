@@ -164,9 +164,16 @@ h2 {
   min-height: 360px;
 }
 
+.plot-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 8px 4px;
+}
+
 .plot-hint {
   margin: 0;
-  padding: 0 8px 4px;
   font-size: 0.8rem;
   color: var(--muted);
 }
@@ -343,6 +350,11 @@ input[type="range"]:focus-visible {
   background: var(--accent);
   color: var(--accent-text);
   cursor: pointer;
+}
+
+.button-small {
+  font-size: 0.8rem;
+  padding: 4px 10px;
 }
 
 .button-quiet {

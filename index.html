@@ -26,7 +26,10 @@
   <main class="layout">
     <section class="plot-card" aria-label="3d plot of the predicted response">
       <div id="plot" class="plot" role="img" aria-label="Fraction of CD69+ cells versus pMHC concentration, one line per peptide, placed by peptide KD."></div>
-      <p class="plot-hint">Drag to rotate. Scroll or pinch to zoom. Double-click to reset the view.</p>
+      <div class="plot-footer">
+        <p class="plot-hint">Drag to rotate. Scroll or pinch to zoom.</p>
+        <button type="button" id="reset-view" class="button button-quiet button-small">Reset view</button>
+      </div>
     </section>
 
     <aside class="panel" aria-label="Parameters and results">

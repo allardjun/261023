@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CD69 Response Explorer</title>
+  <meta name="description" content="Move the parameters of a kinetic proofreading model of T cell activation and watch the predicted dose-response curves of five peptides change, in 3d.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M3 26 C11 26 12 7 20 7 S26 7 29 7' fill='none' stroke='%23277e8e' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"
+          integrity="sha384-cCVCZkAjYNxaYKbM8lsArLznDF/SvMFr1jcZrvOpSTCa0W40ZAdLzHCEulnUa5i7"
+          crossorigin="anonymous"></script>
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <header class="page-header">
+    <h1>CD69 response explorer</h1>
+    <p class="lede">
+      A T cell decides whether to respond by how strongly its receptors bind a peptide, and how much of that peptide it sees.
+      This page shows a model of that decision.
+      Move the sliders to see how each part of the model shapes the response to five peptides.
+    </p>
+  </header>
+
+  <main class="layout">
+    <section class="plot-card" aria-label="3d plot of the predicted response">
+      <div id="plot" class="plot" role="img" aria-label="Fraction of CD69+ cells versus pMHC concentration, one line per peptide, placed by peptide KD."></div>
+      <p class="plot-hint">Drag to rotate. Scroll or pinch to zoom. Double-click to reset the view.</p>
+    </section>
+
+    <aside class="panel" aria-label="Parameters and results">
+      <section class="readout" aria-live="polite">
+        <div class="stat">
+          <span class="stat-label">Discrimination power</span>
+          <span class="stat-value" id="power">–</span>
+        </div>
+        <p class="stat-note" id="local-slopes"></p>
+      </section>
+
+      <form id="controls" class="controls" autocomplete="off"></form>
+
+      <div class="actions">
+        <button type="button" id="reset" class="button">Reset to default values</button>
+        <button type="button" id="copy-link" class="button button-quiet">Copy link to these values</button>
+      </div>
+      <p class="defaults-note">
+        The default values come from one fit of the model to CD69 data.
+        The fitting method is not yet published, so treat them as a starting point.
+      </p>
+
+      <section class="derived">
+        <h2>Combinations that matter</h2>
+        <p class="muted">The response depends on most parameters only through these four combinations.</p>
+        <dl id="derived" class="derived-list"></dl>
+      </section>
+    </aside>
+  </main>
+
+  <article class="notes">
+    <section>
+      <h2>How to read the plot</h2>
+      <ul>
+        <li>Each colored line is one peptide: the fraction of CD69+ cells as the pMHC concentration rises.</li>
+        <li>The lines sit at their peptide's KD along the depth axis. Higher KD means weaker binding.</li>
+        <li>The dashed line on the floor is the potency P<sub>15</sub>: the pMHC concentration that makes 15% of cells CD69+. It has gaps where the response never reaches 15%.</li>
+        <li>The dots are the P<sub>15</sub> of the five peptides, and the red line is a straight-line fit through them on log scales.</li>
+        <li>Rotate to look straight down on the floor to see that line's true slope.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Discrimination power</h2>
+      <p>
+        Pettmann et al. measured how sharply T cells tell peptides apart by fitting a straight line to log P<sub>15</sub> against log KD across a panel of peptides
+        (<a href="https://doi.org/10.7554/eLife.67092">eLife 2021</a>).
+        The slope is the discrimination power.
+        A receptor that only counted bound peptides would give 1; they found about 2 for T cells.
+      </p>
+      <p>
+        The dashed line is curved, so its local slope also changes along the panel.
+        Where binding is tight, almost every receptor stays bound whatever the KD, and the slope is low.
+        Where binding is weak, proofreading filters out short contacts, and the slope is high.
+        The slope also climbs steeply wherever a peptide's top response falls close to 15%.
+      </p>
+    </section>
+
+    <section>
+      <h2>The model</h2>
+      <p>The model passes the signal through four stages, each in closed form.</p>
+      <ol class="equations">
+        <li>
+          <span class="eq-name">Binding.</span>
+          Receptors and peptides bind in the contact between cells, giving the density of bound complexes
+          <math display="block">
+            <msub><mi>C</mi><mi>T</mi></msub><mo>=</mo>
+            <msub><mi>f</mi><mi>A</mi></msub>
+            <mfrac>
+              <mrow><mi>b</mi><mo>−</mo><msqrt><msup><mi>b</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>α</mi><mi>x</mi><msub><mi>T</mi><mi>T</mi></msub></msqrt></mrow>
+              <mn>2</mn>
+            </mfrac><mo>,</mo>
+            <mspace width="1em"></mspace>
+            <mi>b</mi><mo>=</mo><mi>α</mi><mi>x</mi><mo>+</mo><msub><mi>T</mi><mi>T</mi></msub><mo>+</mo>
+            <mfrac><mrow><msub><mover><mi>g</mi><mo>~</mo></mover><mn>1</mn></msub><msub><mi>K</mi><mi>D</mi></msub></mrow><msubsup><mi>k</mi><mtext>on</mtext><mtext>2d</mtext></msubsup></mfrac>
+          </math>
+          where <var>x</var> is the pMHC concentration.
+        </li>
+        <li>
+          <span class="eq-name">Proofreading.</span>
+          A bound complex must pass several steps before it signals, and it may let go at each one:
+          <math display="block">
+            <msub><mi>C</mi><mi>N</mi></msub><mo>=</mo>
+            <msup><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mfrac><mrow><msub><mover><mi>g</mi><mo>~</mo></mover><mn>1</mn></msub><msub><mi>K</mi><mi>D</mi></msub></mrow><msub><mi>k</mi><mi>P</mi></msub></mfrac><mo>)</mo></mrow><mrow><mo>−</mo><msub><mi>n</mi><mtext>KP</mtext></msub></mrow></msup>
+            <msub><mi>C</mi><mi>T</mi></msub>
+          </math>
+        </li>
+        <li>
+          <span class="eq-name">Switch.</span>
+          Inside the cell, the signal flips a switch once enough complexes finish:
+          <math display="block">
+            <mi>X</mi><mo>=</mo>
+            <mfrac>
+              <msubsup><mi>C</mi><mi>N</mi><msub><mi>n</mi><mi>C</mi></msub></msubsup>
+              <mrow><msubsup><mi>C</mi><mi>N</mi><msub><mi>n</mi><mi>C</mi></msub></msubsup><mo>+</mo><msubsup><mi>λ</mi><mi>X</mi><msub><mi>n</mi><mi>C</mi></msub></msubsup></mrow>
+            </mfrac>
+          </math>
+        </li>
+        <li>
+          <span class="eq-name">Output.</span>
+          The switch sets the fraction of cells that show CD69:
+          <math display="block">
+            <msub><mi>O</mi><mn>1</mn></msub><mo>=</mo>
+            <msubsup><mi>O</mi><mn>1</mn><mtext>max</mtext></msubsup>
+            <mfrac><mi>X</mi><mrow><msub><mi>X</mi><msub><mi>O</mi><mn>1</mn></msub></msub><mo>+</mo><mi>X</mi></mrow></mfrac>
+          </math>
+        </li>
+      </ol>
+      <p>
+        The five peptides and their KDs (7.97 to 299 µM) are from Aleksic et al. (Immunity 2010).
+        The model is from a manuscript in preparation.
+      </p>
+    </section>
+
+    <section>
+      <h2>What the parameters mean</h2>
+      <dl id="glossary" class="glossary"></dl>
+    </section>
+  </article>
+
+  <footer class="page-footer">
+    <p>
+      Everything is computed in your browser.
+      <a href="https://github.com/allardjun/261023">Source on GitHub</a>.
+    </p>
+  </footer>
+</body>
+</html>

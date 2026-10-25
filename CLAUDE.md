@@ -31,6 +31,8 @@ The Julia version is only needed to regenerate `test/reference.json`.
 - Colors live as CSS custom properties on `:root`, redefined for dark mode under `prefers-color-scheme` (guarded by `:root:not([data-theme="light"])`) and again under `:root[data-theme="dark"]`.
   `js/app.js` reads them at render time to theme the plot, so a new color goes in CSS first.
 - Peptide colors are a reversed viridis, with a lighter stretch for the dark theme (`PEPTIDE_COLORS` in `js/app.js`).
+  Each curve's projection on the floor uses its peptide's hue, darkened (`SHADOW`, by 0.3 in light and 0.45 in dark), and is thinner than the curve.
+  A paler, semi-transparent projection was hard to tell apart from the curves, which lie on the floor at low pMHC.
 - The layout must work at phone width (about 400 px) with a 16 px gutter and no sideways scrolling.
   Below 960 px the panel drops under the plot; below 600 px the plot is square.
 

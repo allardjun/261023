@@ -61,6 +61,9 @@ const PEPTIDE_COLORS = {
   dark: ["#fde725", "#7dd24f", "#24aa83", "#287c8e", "#5b5fb0"],
 };
 
+// Each curve's projection on the floor is drawn in its own hue, darkened by this fraction, so it reads as a shadow rather than as more of the curve.
+const SHADOW = { light: 0.3, dark: 0.45 };
+
 let params = { ...DEFAULT_PARAMS, ...paramsFromHash() };
 const plotEl = document.getElementById("plot");
 
@@ -100,12 +103,15 @@ function theme() {
     fit: get("--fit"),
     font: get("--font"),
     peptides: dark ? PEPTIDE_COLORS.dark : PEPTIDE_COLORS.light,
+    shadow: dark ? SHADOW.dark : SHADOW.light,
   };
 }
 
-function withAlpha(hex, a) {
+// The same hue, mixed toward black by the fraction k.
+function darken(hex, k) {
   const n = parseInt(hex.slice(1), 16);
-  return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${a})`;
+  const c = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map((v) => Math.round(v * (1 - k)));
+  return `rgb(${c.join(", ")})`;
 }
 
 // Controls
@@ -212,7 +218,7 @@ function traces(p, t) {
     const zs = XS.map((x) => cd69Fraction(x, q.KD, p));
     out.push({
       type: "scatter3d", mode: "lines", x: XS, y: ys, z: zeros,
-      line: { color: withAlpha(color, 0.35), width: 2 }, hoverinfo: "skip",
+      line: { color: darken(color, t.shadow), width: 2 }, hoverinfo: "skip",
     });
     out.push({
       type: "scatter3d", mode: "lines", x: XS, y: ys, z: zs, name: q.name,

@@ -50,7 +50,7 @@ The code's `g1` is g̃₁ = g₁·kon³ᵈ, so the off-rate is `g1·KD`; the pag
 Facts worth keeping in mind when changing the page:
 
 - Seven parameters (`fA`, `alpha`, `TT`, `kon2d`, `g1`, `kP`, `lambdaX`) enter only through four combinations: x* = TT/α, y* = λX/(fA·TT), KD_Lauf = TT·kon2d/g̃₁ and KD_McK = kP/g̃₁.
-  The panel lists these under "Combinations that matter".
+  `compositeParams` in `js/model.js` computes them; the page used to list them under "Combinations that matter", but that section was removed at the owner's request.
   So many slider moves are equivalent, and that is expected, not a bug.
 - `X` followed by `O1` is itself one Hill switch in `C_N`, with plateau `O1max/(1 + X_O1)` and threshold `λX·(X_O1/(1 + X_O1))^(1/nC)`.
   So `lambdaX`, `X_O1` and `O1max` trade off against one another.

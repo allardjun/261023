@@ -5,7 +5,6 @@ import {
   DEFAULT_PARAMS,
   PEPTIDES,
   cd69Fraction,
-  compositeParams,
   discriminationPower,
   localP15Slope,
   log10Potency,
@@ -337,18 +336,6 @@ function renderReadouts(p, dp) {
     `Slope of the straight-line fit of log P15 against log KD. ` +
     `The dashed line's own slope is ${Number.isFinite(s1) ? s1.toFixed(2) : "n/a"} at ${first.name} ` +
     `and ${Number.isFinite(s2) ? s2.toFixed(2) : "n/a"} at ${last.name}.`;
-
-  const c = compositeParams(p);
-  const rows = [
-    ["x*", "T<sub>T</sub>/α", c.xstar, "µM", "pMHC concentration at which pMHC and receptor densities match."],
-    ["y*", "λ<sub>X</sub>/(f<sub>A</sub>T<sub>T</sub>)", c.ystar, "", "Switch threshold, relative to the free receptors."],
-    ["K<sub>D</sub><sup>Lauf</sup>", "T<sub>T</sub>k<sub>on</sub><sup>2d</sup>/g̃<sub>1</sub>", c.KD_Lauf, "µM", "Below this KD, nearly every receptor stays bound."],
-    ["K<sub>D</sub><sup>McK</sup>", "k<sub>P</sub>/g̃<sub>1</sub>", c.KD_McK, "µM", "Above this KD, proofreading cuts the signal sharply."],
-  ];
-  document.getElementById("derived").innerHTML = rows
-    .map(([sym, def, v, unit, text]) =>
-      `<dt>${sym} = ${def}</dt><dd><span class="value">${fmt(v)}${unit ? " " + unit : ""}</span><br>${text}</dd>`)
-    .join("");
 }
 
 // Redraw at most once per frame, however fast the sliders move.

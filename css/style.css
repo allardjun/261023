@@ -80,12 +80,6 @@ h2 {
   margin: 0 0 0.5rem;
 }
 
-.muted {
-  color: var(--muted);
-  font-size: 0.875rem;
-  margin: 0 0 0.75rem;
-}
-
 /* Page frame */
 
 .page-header,
@@ -359,36 +353,6 @@ input[type="range"]:focus-visible {
 .button:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
-}
-
-.derived {
-  margin-top: 16px;
-  padding-top: 12px;
-  border-top: 1px solid var(--border);
-}
-
-.derived-list {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 6px 12px;
-  margin: 0;
-  font-size: 0.875rem;
-}
-
-.derived-list dt {
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.derived-list dd {
-  margin: 0;
-  color: var(--muted);
-}
-
-.derived-list .value {
-  color: var(--text);
-  font-family: var(--mono);
-  font-size: 0.85rem;
 }
 
 /* Notes below the plot */

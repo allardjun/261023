@@ -1,4 +1,4 @@
-# CD69 response explorer: notes for Claude
+# T cell activation explorer: notes for Claude
 
 This repository is public, and so is this file.
 Notes that must stay private (unpublished results, local paths, the upstream fit) go in `CLAUDE.local.md`, which git ignores.
@@ -18,11 +18,11 @@ The Julia version is only needed to regenerate `test/reference.json`.
 
 - Call the fitted parameter set **"default values"** (or "the defaults"), never "fitted", "learned" or "best-fit".
   The fitting procedure is not peer-reviewed or published, so the page presents the values as a starting point, not a result.
-  `index.html` says so under the buttons, and the README says so too.
+  The README says so; the page itself no longer comments on where the defaults come from, at the owner's request.
 - Write for a reader outside the field: short, concise sentences, without software or molecular-biology jargon.
   Explain a term the first time it appears (for example P15, KD, discrimination power).
 - Cite sources by name and year in the text, with a DOI link where there is one.
-  The model itself is "from a manuscript in preparation"; do not describe its unpublished results.
+  The page describes the model as "an extension of Lever et al. 2014" ([Nature Reviews Immunology](https://www.nature.com/articles/nri3728)); do not describe its unpublished results.
 
 ## Conventions
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CD69 Response Explorer</title>
+  <title>T Cell Activation Explorer</title>
   <meta name="description" content="Move the parameters of a kinetic proofreading model of T cell activation and watch the predicted dose-response curves of five peptides change, in 3d.">
   <meta name="color-scheme" content="light dark">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M3 26 C11 26 12 7 20 7 S26 7 29 7' fill='none' stroke='%23277e8e' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
@@ -15,12 +15,7 @@
 </head>
 <body>
   <header class="page-header">
-    <h1>CD69 response explorer</h1>
-    <p class="lede">
-      A T cell decides whether to respond by how strongly its receptors bind a peptide, and how much of that peptide it sees.
-      This page shows a model of that decision.
-      Move the sliders to see how each part of the model shapes the response to five peptides.
-    </p>
+    <h1>T cell activation explorer</h1>
   </header>
 
   <main class="layout">
@@ -47,10 +42,6 @@
         <button type="button" id="reset" class="button">Reset to default values</button>
         <button type="button" id="copy-link" class="button button-quiet">Copy link to these values</button>
       </div>
-      <p class="defaults-note">
-        The default values come from one fit of the model to CD69 data.
-        The fitting method is not yet published, so treat them as a starting point.
-      </p>
 
       <section class="derived">
         <h2>Combinations that matter</h2>
@@ -140,7 +131,7 @@
       </ol>
       <p>
         The five peptides and their KDs (7.97 to 299 µM) are from Aleksic et al. (Immunity 2010).
-        The model is from a manuscript in preparation.
+        The model is an extension of <a href="https://www.nature.com/articles/nri3728">Lever et al. 2014</a>.
       </p>
     </section>
 

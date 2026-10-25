@@ -1,4 +1,4 @@
-# CD69 response explorer
+# T cell activation explorer
 
 An interactive page for a kinetic proofreading model of T cell activation.
 Sliders set the model's parameters, and a 3d plot shows the predicted fraction of CD69+ cells against pMHC concentration for five peptides of different binding strength.
@@ -51,4 +51,4 @@ A push to `main` is live within a minute or so, but browsers may keep the previo
 
 - Peptide affinities: Aleksic et al., Immunity 2010.
 - Discrimination power: Pettmann et al., eLife 2021, [doi:10.7554/eLife.67092](https://doi.org/10.7554/eLife.67092).
-- The model is from a manuscript in preparation.
+- Model: an extension of Lever et al., Nature Reviews Immunology 2014, [doi:10.1038/nri3728](https://doi.org/10.1038/nri3728).

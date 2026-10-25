@@ -40,6 +40,13 @@ It needs Node 20 or later and installs nothing.
 The reference values come from the Julia version of the model, which lives in a separate repository.
 To regenerate them after changing the model, run `julia test/make_reference.jl /path/to/model.jl`.
 
+## Deploying
+
+GitHub Pages serves the `main` branch from the repository root, and `.nojekyll` tells it to serve the files as they are.
+A push to `main` is live within a minute or so, but browsers may keep the previous version for up to 10 minutes.
+
+`CLAUDE.md` holds notes for working on the page: wording rules, the model's quirks, and lessons from building the plot.
+
 ## Sources
 
 - Peptide affinities: Aleksic et al., Immunity 2010.
